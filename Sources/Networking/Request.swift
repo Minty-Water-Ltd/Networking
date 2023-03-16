@@ -11,7 +11,7 @@ public protocol APIRequest {
 
     associatedtype DecodableData
 
-    func urlRequest() throws -> URLRequest
+    func execute() async throws -> DecodableData
 }
 
 public class NetworkAPIRequest<T: Decodable>: APIRequest {
@@ -44,7 +44,7 @@ public class NetworkAPIRequest<T: Decodable>: APIRequest {
         self.headers = httpHeaders
     }
 
-    public func urlRequest() throws -> URLRequest {
+    func urlRequest() throws -> URLRequest {
         var urlComponents = URLComponents()
         urlComponents.host = baseURL
         urlComponents.port = port
@@ -64,7 +64,7 @@ public class NetworkAPIRequest<T: Decodable>: APIRequest {
         return urlRequest
     }
 
-    func execute() async throws -> DecodableData {
+    public func execute() async throws -> DecodableData {
         let request = try urlRequest()
 
         let (data, response) = try await urlSession.data(for: request)
