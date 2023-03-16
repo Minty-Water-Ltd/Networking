@@ -21,6 +21,13 @@ public struct Port {
     }
 }
 
-public enum Paths: String {
-    case none = ""
+public enum Paths {
+    case custom(String)
+
+    public var rawValue: String {
+        switch self {
+        case let .custom(string):
+            return string
+        }
+    }
 }
